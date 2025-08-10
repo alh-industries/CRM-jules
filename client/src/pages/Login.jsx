@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -14,15 +13,11 @@ const Login = () => {
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', formData);
-      localStorage.setItem('token', res.data.token);
-      navigate('/clients'); // Redirect to clients page after login
-    } catch (err) {
-      console.error(err.response.data);
-    }
+    // In the prototype, we'll just navigate to the dashboard on login attempt.
+    console.log('Attempting login (prototype), redirecting to dashboard...');
+    navigate('/dashboard');
   };
 
   return (

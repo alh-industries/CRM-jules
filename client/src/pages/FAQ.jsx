@@ -1,21 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { mockFaqs } from '../mockData';
 
 const FAQ = () => {
-  const [faqs, setFaqs] = useState([]);
-
-  useEffect(() => {
-    const fetchFaqs = async () => {
-      try {
-        const res = await axios.get('http://localhost:5000/api/faqs');
-        setFaqs(res.data);
-      } catch (err) {
-        console.error(err.response.data);
-      }
-    };
-
-    fetchFaqs();
-  }, []);
+  const faqs = mockFaqs;
 
   return (
     <div>

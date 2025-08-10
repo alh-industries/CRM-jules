@@ -1,47 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const FormView = () => {
-  const [form, setForm] = useState(null);
-  const [responses, setResponses] = useState({});
-  const { id } = useParams();
-  const navigate = useNavigate();
+// A more detailed mock form for demonstration purposes
+const detailedMockForm = {
+    _id: 'form1',
+    name: 'Client Intake Form',
+    description: 'Standard form for new clients. Please fill out all fields.',
+    fields: [
+        { _id: 'field1', label: 'Full Name', type: 'text' },
+        { _id: 'field2', label: 'Email Address', type: 'text' },
+        { _id: 'field3', label: 'Date of Birth', type: 'date' },
+        { _id: 'field4', label: 'Do you agree to the terms?', type: 'checkbox' },
+    ],
+};
 
-  useEffect(() => {
-    const fetchForm = async () => {
-      try {
-        const res = await axios.get(`http://localhost:5000/api/forms/${id}`);
-        setForm(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchForm();
-  }, [id]);
+
+const FormView = () => {
+  // In a real app, you'd fetch the form based on the id.
+  // For the prototype, we'll just use a detailed mock form.
+  const form = detailedMockForm;
+  const [responses, setResponses] = useState({});
+  const { id } = useParams(); // We get the id but don't use it to fetch
+  const navigate = useNavigate();
 
   const onChange = (fieldLabel, value) => {
     setResponses({ ...responses, [fieldLabel]: value });
   };
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault();
     const submission = {
+      formId: id,
       responses: Object.entries(responses).map(([fieldLabel, value]) => ({ fieldLabel, value })),
-      // In a real app, you'd get the clientId from the logged-in client user
-      clientId: '60d5f3f7a8b6a2b3e8c3e8a6' // Placeholder
     };
-    try {
-      await axios.post(`http://localhost:5000/api/forms/${id}/submit`, submission);
-      alert('Form submitted successfully!');
-      navigate('/');
-    } catch (err) {
-      console.error(err.response.data);
-    }
+    // In a real app, you'd send this to a backend.
+    console.log('Form submitted (prototype):', submission);
+    alert('Form submitted successfully! (Prototype)');
+    navigate('/dashboard');
   };
 
   if (!form) {
-    return <div>Loading...</div>;
+    return <div>Loading form...</div>;
   }
 
   return (
@@ -50,10 +49,14 @@ const FormView = () => {
       <p>{form.description}</p>
       <form onSubmit={onSubmit}>
         {form.fields.map(field => (
-          <div key={field._id}>
+          <div key={field._id} style={{ margin: '1rem 0' }}>
             <label>{field.label}</label>
-            {/* Render different input types based on field.type */}
-            <input type="text" onChange={e => onChange(field.label, e.target.value)} />
+            <br />
+            <input
+              type={field.type}
+              onChange={e => onChange(field.label, e.target.value)}
+              style={{ width: '100%', padding: '8px', marginTop: '4px' }}
+            />
           </div>
         ))}
         <input type="submit" value="Submit" />
