@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const FormBuilder = () => {
@@ -30,26 +29,18 @@ const FormBuilder = () => {
     setFields(newFields);
   };
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault();
     const newForm = {
       name: formName,
       description: formDescription,
       fields,
     };
-    try {
-      const token = localStorage.getItem('token');
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
-        },
-      };
-      await axios.post('http://localhost:5000/api/forms', newForm, config);
-      navigate('/forms'); // Redirect to a new page that will list all forms
-    } catch (err) {
-      console.error(err.response.data);
-    }
+    // In a real app, you'd send this to a backend.
+    // For this prototype, we'll just log it and redirect.
+    console.log('New form created (prototype):', newForm);
+    alert('Form saved successfully! (Prototype)');
+    navigate('/forms');
   };
 
   return (

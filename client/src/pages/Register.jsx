@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -16,20 +15,11 @@ const Register = () => {
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault();
-    if (password !== password2) {
-      console.log('Passwords do not match');
-    } else {
-      const newUser = { name, email, password };
-      try {
-        const res = await axios.post('http://localhost:5000/api/auth/register', newUser);
-        localStorage.setItem('token', res.data.token);
-        navigate('/clients'); // Redirect to clients page after registration
-      } catch (err) {
-        console.error(err.response.data);
-      }
-    }
+    // In the prototype, we'll just navigate to the dashboard on register attempt.
+    console.log('Attempting to register (prototype), redirecting to dashboard...');
+    navigate('/dashboard');
   };
 
   return (

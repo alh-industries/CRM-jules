@@ -1,30 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { mockClients } from '../mockData';
 
 const Clients = () => {
-  const [clients, setClients] = useState([]);
-
-  useEffect(() => {
-    const fetchClients = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const config = {
-          headers: {
-            'x-auth-token': token,
-          },
-        };
-
-        try {
-          const res = await axios.get('http://localhost:5000/api/clients', config);
-          setClients(res.data);
-        } catch (err) {
-          console.error(err.response.data);
-        }
-      }
-    };
-
-    fetchClients();
-  }, []);
+  const clients = mockClients;
 
   return (
     <div>

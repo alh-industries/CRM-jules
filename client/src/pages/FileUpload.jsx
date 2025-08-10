@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const FileUpload = () => {
   const [file, setFile] = useState('');
@@ -11,25 +10,23 @@ const FileUpload = () => {
     setFilename(e.target.files[0].name);
   };
 
-  const onSubmit = async e => {
+  const onSubmit = e => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('myFile', file);
-
-    try {
-      const token = 'your_jwt_token'; // Placeholder
-      const res = await axios.post('http://localhost:5000/api/files/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'x-auth-token': token
-        }
-      });
-
-      const { fileName, filePath } = res.data;
-      setUploadedFile({ fileName, filePath });
-    } catch (err) {
-      console.error(err.response.data);
+    if (!file) {
+      alert('Please select a file to upload.');
+      return;
     }
+
+    // Simulate file upload
+    alert(`Uploading "${filename}"... (Prototype)`);
+    console.log('Simulating file upload for:', filename);
+
+    setTimeout(() => {
+      // Fake a successful upload response
+      const fakeFilePath = 'https://via.placeholder.com/400x200.png?text=Upload+Successful';
+      setUploadedFile({ fileName: filename, filePath: fakeFilePath });
+      alert(`"${filename}" uploaded successfully!`);
+    }, 1500); // Simulate a 1.5 second upload time
   };
 
   return (
